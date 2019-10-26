@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link data-require="bootstrap@*" data-semver="4.1.3" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
+  <link data-require="fontawesome@*" data-semver="5.5.0" rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" />
+  <link data-require="bootstrap-css@3.*" data-semver="3.3.7" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" />
+  <script data-require="bootstrap@*" data-semver="4.1.3" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script data-require="jquery@*" data-semver="3.2.1" src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+  <script data-require="angularjs@1.6.*" data-semver="1.6.4" src="https://code.angularjs.org/1.6.4/angular.min.js"></script>
+  <script data-require="angular-animate@1.6.*" data-semver="1.6.5" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-animate.min.js"></script>
+  <script data-require="angular-touch@1.6.*" data-semver="1.6.2" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-touch.js"></script>
+  <script data-require="ui-bootstrap@*" data-semver="2.5.0" src="https://cdn.rawgit.com/angular-ui/bootstrap/gh-pages/ui-bootstrap-tpls-2.5.0.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js"></script>
+</head>
+
+<body>
+  <div class="col-md-12 col-md-offset-6 d-block" id="loginform" ng-app="login_form">
+    <h2>Welcome</h2>
+    <form name="form" ng-submit="login()" role="form">
+      <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" class="form-control" ng-model="username" required="" />
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" class="form-control" ng-model="password" required="" />
+      </div>
+      <div class="form-group">
+        <label>
+          <input ng-checked="rememberMe" ng-click="rememberMe();" type="checkbox" /> Remember me
+        </label>
+      </div>
+      <div class="form-actions">
+        <button type="submit" ng-disabled="form.$invalid || dataLoading" ng-click="submitLogin()" class="btn btn-primary">Login</button>
+        <a href="#" id="register" class="btn btn-link">Register</a>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-12 col-md-offset-6 d-none" id="registerform" ng-app="register_form">
+    <h2>Register</h2>
+    <form name="registerform" ng-submit="register()" role="form">
+      <div class="form-group" ng-class="{ 'has-error': registerform.username.$dirty && registerform.username.$error.required }">
+        <label for="username">Username</label>
+        <span ng-show="registerform.username.$dirty && registerform.reg-username.$error.required" class="text-muted">(Mandatory)</span>
+        <input type="text" name="username" id="reg-username" class="form-control" ng-model="reg-username" ngModel minlength="3" required="" />
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': registerform.username.$dirty && registerform.username.$error.required }">
+        <label for="Email">Email</label>
+        <span ng-show="registerform.email.$dirty && registerform.email.$error.required" class="text-muted">(Mandatory)</span>
+        <input type="email" name="Email" id="email" class="form-control" ng-model="email" required="" />
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': registerform.reg-password.$dirty && registerform.reg-password.$error.required }">
+        <label for="password">Password</label>
+        <span ng-show="registerform.password.$dirty && registerform.reg-password.$error.required" class="text-muted">(Mandatory)</span>
+        <input type="password" name="password" pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$" id="reg-password" class="form-control" ngModel minlength="5" ng-model="reg-password" required="" />
+        <span toggle="#reg-password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': registerform.confirm-password.$dirty && registerform.confirm-password.$error.required }">
+        <label for="confirm-password">Confirm Password</label>
+        <span ng-show="registerform.confirm-password.$dirty && registerform.confirm-password.$error.required" class="text-muted">(Mandatory)</span>
+        <input type="password" name="confirm-password" id="confirm-password" class="form-control" ng-model="confirm-password" required="" />
+        <span toggle="#confirm-password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': registerform.telephone.$dirty && registerform.telephone.$error }">
+        <label for="telephone">Telephone Number</label>
+        <span ng-show="registerform.phone.$dirty && registerform.phone.$error" class="text-muted">(Optional)</span>
+        <input type="tel" name="phone" id="phone" class="form-control" ng-model="phone" />
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': registerform.address.$dirty && registerform.address.$error }">
+        <label for="address">Address</label>
+        <span ng-show="registerform.address.$dirty && registerform.address.$error" class="text-muted">(Optional)</span>
+        <input type="text" name="address" id="address" class="form-control" ng-model="address" />
+      </div>
+      <div class="form-actions">
+        <button type="submit" ng-disabled="registerform.$invalid || dataLoading || reg-password === confirm-password" class="btn btn-primary">Register</button>
+        <a href="#" id="reg-cancel" class="btn btn-link">Cancel</a>
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>

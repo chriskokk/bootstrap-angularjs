@@ -1,0 +1,13 @@
+/* Styles go here */
+.field-icon {
+  float: right;
+  position: relative;
+  z-index: 2;
+  top: -28px;
+  left: -10px;
+}
+
+#loginform, #registerform{
+  background-color: #eee;
+  padding:20px;
+}

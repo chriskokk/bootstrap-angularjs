@@ -1,0 +1,9 @@
+<h1>Hi {{vm.user.username}}!</h1>
+<p>You're logged in!!</p>
+<h3>All registered users:</h3>
+<ul>
+    <li ng-repeat="user in allUsers">
+        {{user.username}} ({{user.email}} {{user.password}} {{user.phone}} {{user.address}})
+        - <a ng-click="vm.deleteUser(user.id)">Delete</a>
+    </li>
+</ul>
